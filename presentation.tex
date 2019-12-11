@@ -1,0 +1,220 @@
+\documentclass[mathserif]{beamer}
+
+\usepackage[english]{babel} % language selection: english/ngerman
+                            % note: delete all output files on language change
+\usepackage[utf8]{inputenc} % allow for using umlauts
+\usepackage{lipsum}         % provide lorem ipsum ...
+\usepackage{siunitx}        % provide SI units
+\usepackage{amsfonts}       % Provides hollow R for real numbers, hollow C for complex numbers, etc.
+\usepackage{algorithm}      % Provides Border for Pseudocode
+\usepackage{algpseudocode}  % Provides Pseudocode
+\usepackage{interval}       % Provides proper intervals
+\usepackage{listings}       % Provides Source Code Listing
+\usepackage{gensymb}        % Provides the degree symbol
+\usepackage{wrapfig}        % Provides wrapping of text around figures
+\usepackage{amssymb}        % Provides empty set symbol (\varnothing)
+\usepackage{colortbl}
+\usepackage{varwidth}
+\usepackage{xcolor}
+\usepackage{mathtools}
+\usepackage[export]{adjustbox}
+\usepackage{subfig}
+\usepackage{tikz}
+\usepackage{slashbox}
+\usepackage{hyperref}
+\usepackage{esvect}
+\usepackage[makeroom]{cancel}
+\usepackage{pdfpages}
+\usepackage{amsmath}
+\usepackage{outlines}
+\usepackage{kbordermatrix}
+\usepackage[customcolors]{hf-tikz}
+\usepackage{pgfpages}
+
+\usetikzlibrary{arrows.meta}
+
+\DeclareMathOperator{\Prob}{P}
+
+\tikzset{
+    style green/.style={
+    set fill color=green!60!lime!40,
+    set border color=white,
+  },
+  style cyan/.style={
+    set fill color=cyan!90!blue!60,
+    set border color=white,
+  },
+  style red/.style={
+    set fill color=red!30,
+    set border color=white,
+  },
+  style orange/.style={
+    set fill color=orange!80!red!40,
+    set border color=white,
+  },
+  hor/.style={
+    above left offset={-0.15,0.31},
+    below right offset={0.15,-0.10},
+    #1
+  },
+  ver/.style={
+    above left offset={-0.10,0.35},
+    below right offset={0.10,-0.15},
+    #1
+  }
+}
+
+%\usepackage[T1]{fontenc}
+%\usepackage[tt=false,osf]{libertinus}
+%\usepackage{inconsolata}
+
+\usetheme[progressbar=frametitle]{metropolis}
+%\setbeamertemplate{frame numbering}[fraction]
+%\useoutertheme{metropolis}
+%\useinnertheme{metropolis}
+%\usefonttheme{metropolis}
+%\usecolortheme{spruce}
+%\setbeamercolor{background canvas}{bg=white}
+\metroset{block=fill}
+
+%\setbeamertemplate{note page}[plain]
+%\setbeameroption{show notes on second screen=right}
+
+\title{Modelle für stochastische Prozesse}
+\subtitle{Markov-Ketten}
+
+\author{Nico Pistel}
+
+\institute[Institute]
+{
+    Fachbereich Wirtschaft und Informationstechnik\\
+    Westfälische Hochschule Bocholt
+}
+
+\date{Diskrete Mathematik und Stochastik, 2019}
+
+\subject{Subject}
+% This is only inserted into the PDF information catalog. Can be left
+% out.
+
+\pgfdeclareimage[height=0.5cm]{university-logo}{img/wh.png}
+\logo{\pgfuseimage{university-logo}}
+
+\begin{document}
+
+\begin{frame}[noframenumbering,plain]
+    \titlepage
+\end{frame}
+
+%\begin{frame}{Outline}
+%    \tableofcontents
+%    % You might wish to add the option [pausesections]
+%\end{frame}
+
+\begin{frame}{Stochastische Prozesse}
+    \begin{outline}
+        \1 Stochastischer Prozess beschreibt \textbf{Zustände} eines Systems über die Zeit
+        \2 Zeitliche Abfolge von Zufallsvariablen $X_0,X_1,X_2,\dots$
+        \1 Zustandsmenge $I\subseteq\mathbb{R}$, Zeitbereich $T\subseteq\mathbb{R}$
+        \1 In unserem Fall beide diskret (und manchmal auch endlich)
+        \2 Im Weiteren: $I=\{1,2,3,\dots\}$, $T=\{0,1,2,\dots\}$
+        \1 Jeder Zeitpunkt $t\in T$ wird durch eine Zufallsvariable $X_t:\Omega\to I$ beschrieben
+    \end{outline}
+\end{frame}
+\begin{frame}{Markov-Ketten}
+    \begin{outline}
+        \1 Eine Markov-Kette ist ein stochastischer Prozess, welcher die \textit{Markov-Eigenschaft} besitzt
+    \end{outline}
+    \begin{block}{Markov-Eigenschaft}
+        \[\Prob(X_n=i_n|X_{n-1}=i_{n-1},X_{n-2}\dots)=\Prob(X_n=i_n|X_{n-1}=i_{n-1})\]
+    \end{block}
+    \begin{block}{Homogene Markov-Kette}
+        \[\Prob(X_n=j|X_{n-1}=i)\eqqcolon p_{ij}=const.\;(\forall n\geq1)\]
+    \end{block}
+\end{frame}
+\begin{frame}{Markov-Ketten}
+    \begin{outline}
+        \1 Matrix $\mathbf{P}=(p_{ij})$ heißt Übergangsmatrix
+        \1 Zeilensumme ist stets $1$ (stochastische Matrix)
+        \1 Darstellung als Übergangsgraph mit allen möglichen Zuständen als Knoten des Graphen und den \textbf{positiven} Übergangswahrscheinlichkeiten als gerichtete und gewichtete Kanten
+        \2 Kante $(i,j)$ bekommt Gewicht $p_{ij}$
+    \end{outline}
+\end{frame}
+\begin{frame}{Markov-Ketten}
+    \begin{outline}
+        \1 Wahrscheinlichkeitsverteilungen der Zufallsvariablen $X_n$ werden als Zeilenvektoren $\mathbf{p}_n$ notiert
+        \1 $\mathbf{p}_n=\begin{bmatrix}\Prob(X_n=i),i\in I\end{bmatrix}$
+        \1 Die Startverteilung $\mathbf{p}_0$ beschreibt die Verteilung des Systems am Anfang oder gibt einen festen Startpunkt des Systems an
+        \2 Im Falle eines festen Startpunktes sind alle Wahrscheinlichkeiten von $\mathbf{p}_0$ gleich $0$ außer die des Startzustandes, welche gleich $1$ ist
+        \1 Da es sich um eine Wahrscheinlichkeitsverteilung handelt sind alle Komponenten des Vektors stets nicht-negativ und summieren zu $1$
+    \end{outline}
+\end{frame}
+\begin{frame}{Markov-Ketten}
+    \begin{outline}
+        \1 Die Wahrscheinlichkeit einer endlichen Zustandsfolge lässt sich mit dem Multiplikationssatz für Wahrscheinlichkeiten berechnen und durch die Markov-Eigenschaft vereinfachen
+        \1 $\Prob(X_0=i_0,\dots,X_n=i_n)=\Prob(X_0=i_0)\cdot p_{i_0i_1}\cdot...\cdot p_{i_{n-1}i_n}$
+        \1 Ein Verlauf einer Markov-Kette für ein Ergebnis $\omega\in\Omega$ heißt Pfad der Markov-Kette: $(X_0(\omega),X_1(\omega),\dots)$
+    \end{outline}
+\end{frame}
+\begin{frame}{Markov-Ketten}
+    \begin{outline}
+        \1 Die Wahrscheinlichkeitsverteilung einer Zufallsvariable $X_n$ ergibt sich aus der Verteilung der Zufallsvariable $X_{n-1}$ mit dem Satz der totalen Wahrscheinlichkeit
+        \begin{block}{Rechenregel für Markov-Ketten}
+            \[\Prob(X_n=j)=\sum_{i\in I}\Prob(X_{n-1}=i)\cdot\Prob(X_n=j|X_{n-1}=i)\]
+        \end{block}
+        \1 Zusammengefasst als Matrixprodukt: $\mathbf{p}_{n}=\mathbf{p}_{n-1}\mathbf{P}$
+        \1 Damit folgt, dass $\mathbf{p}_n=\mathbf{p}_{n-m}\mathbf{P}^m$
+        \1 Die Matrix $\mathbf{P}^m$ ist die $m$-Schritt-Übergangsmatrix und enthält Einträge der Form $\Prob(X_n=j|X_{n-m}=i)$ (wieder unabhängig von $n$)
+    \end{outline}
+\end{frame}
+\begin{frame}{Markov-Ketten}
+    \begin{outline}
+        \1 Die Zustandsmenge lässt sich in Äquivalenzklassen zerlegen
+        \2 Disjunkt und füllen die Zustandsmenge komplett aus (Partition)
+        \1 Zwei Zustände gehören genau dann zur selben Klasse, wenn diese miteinander Verbunden sind ($i\leftrightsquigarrow j$)
+        \2 Also $i=j$ oder im Falle von $i\neq j$ der Zustand $j$ in endlich vielen Schritten mit positiver Wahrscheinlichkeit von Zustand $i$ aus erreichbar ist und umgekehrt
+        \1 Eine Markov-Kette heißt \textit{irreduzibel} sofern alle Zustände zur selben Klasse gehören
+    \end{outline}
+\end{frame}
+\begin{frame}{Markov-Ketten}
+    \begin{outline}
+        \1 Ein Zustand heißt \textit{periodisch} mit \textit{Periode} $d$ wenn dieser von sich selber aus nur in Vielfachen einer natürlichen Zahl $d\geq2$ erreichbar ist
+        \1 Ein Zustand heißt \textit{aperiodisch} wenn die Periode $d=1$ ist
+        \1 Es lässt sich zeigen, dass $i\leftrightsquigarrow j\Longrightarrow d(i)=d(j)$
+        \2 Die Begriffe lassen sich damit als Klassenattribute auffassen
+        \2 Für irreduzible Markov-Ketten betreffen die Begriffe somit die ganze Kette
+        \1 Sind alle Klassen aperiodisch, so gilt die ganze Markov-Kette als aperiodisch
+    \end{outline}
+\end{frame}
+\begin{frame}{Markov-Ketten}
+    \begin{outline}
+        \1 Die Gleichgewichtsverteilung (stationäre Verteilung) $\mathbf{\pi}$ einer Markov-Kette erfüllt die Gleichung $\mathbf{\pi}\mathbf{P}=\mathbf{\pi}$
+        \1 Fragen bezüglich der Gleichgewichtsverteilung:
+        \2 Existiert eine gültige Gleichgewichtsverteilung für eine gegebene Markov-Kette?
+        \2 Ist diese eindeutig?
+        \2 Konvergieren andere Startverteilungen einer Markov-Kette langfristig gegen diese Gleichgewichtsverteilung?
+    \end{outline}
+\end{frame}
+\begin{frame}{Markov-Ketten}
+    \begin{outline}
+        \1 Lösen des linearen Gleichungssystems $\mathbf{\pi}\mathbf{P}=\mathbf{\pi}$ mit den Nebenbedingungen $\forall j\in I:\mathbf{\pi}_j\geq0$ und $\sum_{j\in I}\mathbf{\pi}_j=1$
+        \1 Daraus folgt das Schnittprinzip (für eine Teilmenge $K\subseteq I$ der Zustandsmenge)
+        \2 Übergang von $K$ nach $I\setminus K$ und von $I\setminus K$ nach $K$ ist im Gleichgewicht gleich wahrscheinlich
+    \end{outline}
+    \begin{block}{Schnittprinzip}
+        \[\sum_{i\in K}\sum_{j\in I\setminus K}\mathbf{\pi}_i p_{ij}=\sum_{i\in K}\sum_{j\in I\setminus K}\mathbf{\pi}_j p_{ji}\]
+    \end{block}
+\end{frame}
+\begin{frame}{Markov-Ketten}
+    \begin{outline}
+        \1 Zerteilt ein Schnitt zwischen den Zuständen $i$ und $j$ die Markov-Kette in zwei (disjunkte) Teile, dann gilt die \textit{lokale Gleichgewichtsbedingung}: $\pi_i p_{ij}=\pi_j p_{ji}$
+        \1 Gilt dies für alle $i,j$, dann ist die Gleichgewichtsbedingung äquivalent zu der lokalen Gleichgewichtsbedingung (für alle $i,j$)
+    \end{outline}
+\end{frame}
+\begin{frame}{Markov-Ketten}
+    \begin{outline}
+        \1 Ist die Markov-Katte irreduzibel und aperiodisch (und endlich) dann konvergiert die Kette unabhängig von der Startverteilung gegen die (eindeutige) stationäre Verteilung $\pi$
+    \end{outline}
+\end{frame}
+
+\end{document}
